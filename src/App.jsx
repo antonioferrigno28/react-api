@@ -95,8 +95,24 @@ function App() {
   }
 
   function handleDelete(i) {
-    const updatedPosts = posts.filter((post, index) => i !== index);
-    setPosts(updatedPosts);
+    const postToDelete = posts[i];
+
+    fetch(`http://localhost:3000/posts/${postToDelete.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          const updatedPosts = posts.filter((_, index) => i !== index);
+          setPosts(updatedPosts);
+          alert("Post eliminato con successo!");
+        } else {
+          alert("Errore nella cancellazione del post.");
+        }
+      })
+      .catch((err) => {
+        console.error("Errore:", err);
+        alert("Errore di connessione al server.");
+      });
   }
 
   return (
