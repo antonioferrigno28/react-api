@@ -5,7 +5,7 @@
 // Infine Implementiamo la funzionalità di cancellazione
 //////////////////////////////////////////////////////////////////////////////////////////////
 import { useState } from "react";
-import postsData from "./data/posts";
+
 import { useEffect } from "react";
 
 function App() {
@@ -17,7 +17,15 @@ function App() {
     published: true,
   });
 
-  const [posts, setPosts] = useState(postsData);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+      });
+  }, []);
 
   useEffect(() => {
     if (newPost.published) {
